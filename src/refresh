@@ -1,0 +1,13 @@
+Sub Refresh_Packaging_Format_1() ' Refresh the available lines for Packaging Format 1
+    With Worksheets("Available_Lines")
+        .Range("H24:H38").ClearContents
+        .Range("Packaging_Format_1_Lines[#All]").AdvancedFilter _
+            Action:=xlFilterCopy, CriteriaRange:=.Range("Criteria"), _
+            CopyToRange:=.Range("H23"), Unique:=False
+    End With
+End Sub
+' Same logic applies for other formats (e.g., Format 2, Format 3...)
+
+Sub Refresh_Line_Calculations()' Recalculate the Available_Lines sheet
+    Worksheets("Available_Lines").Calculate
+End Sub

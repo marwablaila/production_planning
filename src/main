@@ -1,0 +1,56 @@
+Sub Sort_Orders() ' This macro sorts the orders sheet by multiple criteria
+    Dim ws As Worksheet
+    Set ws = Worksheets("Orders")
+
+    With ws.Sort
+        .SortFields.Clear
+        .SortFields.Add Key:=Range("Orders[Packaging_Group]"), Order:=xlDescending
+        .SortFields.Add Key:=Range("Orders[Date]"), Order:=xlAscending
+        .SortFields.Add Key:=Range("Orders[Already_Launched_Format]"), Order:=xlDescending
+        .SortFields.Add Key:=Range("Orders[Format]"), Order:=xlAscending
+        .SortFields.Add Key:=Range("Orders[Product_Category]"), Order:=xlAscending
+        .SortFields.Add Key:=Range("Orders[Reserved]"), Order:=xlDescending
+        .SortFields.Add Key:=Range("Orders[To_Pack]"), Order:=xlAscending
+        .SetRange Range("Orders[#All]")
+        .Header = xlYes
+        .Apply
+    End With
+
+    ws.Calculate
+End Sub
+
+Sub Recalculate_All() ' This macro calculates both Orders and Calcul sheet
+    Worksheets("Orders").Calculate
+    Worksheets("Calculations").Calculate
+End Sub
+
+Sub Clear_Orders() ' Clears previous orders from the Orders sheet
+    With Worksheets("Orders")
+        .Range("A2:O2", .Range("A2").End(xlDown)).ClearContents
+    End With
+End Sub
+
+Sub Filter_Already_Launched() ' Filters existing launched formats and exports a unique list
+    With Worksheets("Filters")
+        .Calculate
+        Sheets("Orders").Range("Orders[#All]").AdvancedFilter _
+            Action:=xlFilterCopy, CriteriaRange:=.Range("Criteria"), _
+            CopyToRange:=.Range("Filtered_Orders"), Unique:=True
+    End With
+End Sub
+
+Sub Clear_Launched_Formats() ' Clears old format list from filter sheet
+    With Worksheets("Filters")
+        .Range("H3").CurrentRegion.ClearContents
+    End With
+End Sub
+
+Sub Refresh_Launched_Formats() ' Refreshes launched format list and recalculates filter logic
+    With Worksheets("Filters")
+        .Range("H3").CurrentRegion.ClearContents
+        .Calculate
+        Sheets("Orders").Range("Orders[#All]").AdvancedFilter _
+            Action:=xlFilterCopy, CriteriaRange:=.Range("Criteria"), _
+            CopyToRange:=.Range("Filtered_Orders"), Unique:=True
+    End With
+End Sub

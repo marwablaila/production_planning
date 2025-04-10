@@ -1,0 +1,21 @@
+Sub Clear_Final_Planning() ' Clears all contents and formatting from the Planning sheet
+    With Worksheets("Final_Planning")
+        .Range("C3:AC3", .Range("C3").End(xlDown)).ClearContents
+        .Cells.Interior.Color = xlNone
+    End With
+End Sub
+
+Sub Clear_Packaging_Format_1() ' Clears all contents and formatting from Packaging Format 1
+    With Worksheets("Packaging_Format_1")
+        .Cells.ClearContents
+        .Cells.Interior.Color = xlNone
+        .Cells.Borders.LineStyle = xlNone
+    End With
+End Sub
+' Same logic can be applied to other packaging formats
+
+Sub Clear_Filter_Results() ' Clears old order results in the filter sheet
+    With Worksheets("Filters")
+        .Range("H3").CurrentRegion.ClearContents
+    End With
+End Sub
